@@ -1,0 +1,1135 @@
+<meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>فرعون AI - الذكاء الاصطناعي الفرعوني</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Base Body Styles */
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-image: url('https://www.transparenttextures.com/patterns/papyrus.png');
+            background-color: #f5e7c8; /* Light background for day mode */
+            transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition for dark mode */
+        }
+
+        /* Pharaoh Background for Header and Footer */
+        .pharaoh-bg {
+            background-image: linear-gradient(to bottom, rgba(23, 42, 58, 0.8), rgba(23, 42, 58, 0.9)), url('https://www.transparenttextures.com/patterns/black-paper.png');
+            color: #f0e6d2; /* Light text color for header/footer */
+        }
+
+        /* User Message Styles */
+        .user-message {
+            background: linear-gradient(135deg, #f8d56b 0%, #e8b54a 100%); /* Gold gradient */
+            border-left: 4px solid #d4a017; /* Gold border */
+            color: #4a2c0f; /* Dark text for readability */
+        }
+
+        /* AI Message Styles */
+        .ai-message {
+            background: linear-gradient(135deg, #1a365d 0%, #15314b 100%); /* Dark blue gradient */
+            border-right: 4px solid #d4a017; /* Gold border */
+            color: #f0e6d2; /* Light text color */
+        }
+
+        /* Font Size for Message Text (User and AI) */
+        .user-message p,
+        .ai-message p {
+            font-size: 0.9rem; /* Slightly adjusted font size */
+        }
+
+
+        /* Hieroglyphic Border Effect (for AI messages) */
+        .hieroglyphic-border {
+            position: relative;
+        }
+
+        /* Hieroglyphic pseudo-element */
+        .hieroglyphic-border::before {
+            content: "𓃭𓃮𓃯𓃰𓃭𓃮𓃯𓃰"; /* Hieroglyph characters */
+            position: absolute;
+            top: -15px; /* Position above the message bubble */
+            left: 0;
+            right: 0;
+            text-align: center;
+            color: #d4a017; /* Gold color */
+            font-size: 12px;
+            letter-spacing: 5px;
+            opacity: 0.6; /* Slightly transparent */
+        }
+
+        /* Send Button Styles */
+        .send-btn {
+            background: linear-gradient(135deg, #d4a017 0%, #b78a14 100%); /* Gold gradient */
+            box-shadow: 0 4px 6px rgba(180, 140, 20, 0.3); /* Gold shadow */
+        }
+
+        .send-btn:hover:not(:disabled) { /* Apply hover effect only when not disabled */
+            background: linear-gradient(135deg, #b78a14 0%, #9a7311 100%); /* Darker gold on hover */
+        }
+
+        .send-btn:disabled {
+            opacity: 0.5; /* Reduce opacity when disabled */
+            cursor: not-allowed; /* Change cursor */
+        }
+
+
+        /* Input Field Styles */
+        .input-field {
+            background-color: rgba(255, 255, 255, 0.1); /* Slightly transparent white */
+            backdrop-filter: blur(5px); /* Blur effect */
+            border: 1px solid rgba(212, 160, 23, 0.3); /* Semi-transparent gold border */
+            color: #f0e6d2; /* Light text color */
+        }
+
+        .input-field::placeholder {
+             color: rgba(240, 230, 210, 0.7); /* Lighter placeholder text */
+        }
+
+        .input-field:focus {
+            border-color: #d4a017; /* Solid gold border on focus */
+            box-shadow: 0 0 0 2px rgba(212, 160, 23, 0.3); /* Gold focus ring */
+        }
+
+         .input-field:disabled {
+             opacity: 0.6; /* Reduce opacity when disabled */
+             cursor: not-allowed; /* Change cursor */
+         }
+
+
+        /* Typing Indicator Animation */
+        .typing-indicator span {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #d4a017; /* Gold color */
+            margin: 0 2px;
+            animation: bounce 1.4s infinite ease-in-out; /* Bounce animation */
+        }
+
+        .typing-indicator span:nth-child(2) {
+            animation-delay: 0.2s; /* Stagger animation */
+        }
+
+        .typing-indicator span:nth-child(3) {
+            animation-delay: 0.4s; /* Stagger animation */
+        }
+
+        @keyframes bounce {
+            0%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+        }
+
+        /* Message Entry Animation (Papyrus Unroll effect) */
+        .message-animation {
+            animation: papyrusUnroll 0.6s ease-out;
+            transform-origin: top; /* Animation starts from the top */
+        }
+
+        @keyframes papyrusUnroll {
+            0% { transform: scaleY(0); opacity: 0; }
+            100% { transform: scaleY(1); opacity: 1; }
+        }
+
+        /* Dark Mode Styles */
+        .dark-mode {
+            background-image: linear-gradient(to bottom, rgba(10, 15, 20, 0.9), rgba(5, 10, 15, 0.95)), url('https://www.transparenttextures.com/patterns/stardust.png');
+            background-color: #0a141a; /* Very dark background */
+            color: #f0e6d2; /* Light text */
+        }
+
+        .dark-mode .user-message {
+            background: linear-gradient(135deg, #9a7311 0%, #7a5a0e 100%); /* Darker gold gradient */
+            border-left-color: #7a5a0e; /* Darker gold border */
+            color: #fffbeb; /* Very light text */
+        }
+
+        .dark-mode .ai-message {
+            background: linear-gradient(135deg, #0f2027 0%, #0a141a 100%); /* Even darker blue gradient */
+            border-right-color: #9a7311; /* Darker gold border */
+            color: #f0e6d2; /* Light text */
+        }
+
+         .dark-mode .hieroglyphic-border::before {
+             color: #9a7311; /* Darker gold hieroglyphs */
+         }
+
+        .dark-mode .input-field {
+            background-color: rgba(15, 25, 35, 0.7); /* Darker transparent background */
+            border: 1px solid rgba(154, 115, 17, 0.5); /* Semi-transparent darker gold border */
+            color: #f0e6d2; /* Light text */
+        }
+
+         .dark-mode .input-field::placeholder {
+             color: rgba(240, 230, 210, 0.5); /* Even lighter placeholder text */
+         }
+
+
+        /* Dark Mode Toggle Button Styles */
+        .dark-mode-toggle {
+            background: linear-gradient(135deg, #1a365d 0%, #15314b 100%); /* Dark blue gradient */
+        }
+
+        .dark-mode .dark-mode-toggle {
+            background: linear-gradient(135deg, #d4a017 0%, #b78a14 100%); /* Gold gradient in dark mode */
+        }
+
+        /* Character Selector Modal Styles */
+        .character-selector {
+            background: linear-gradient(135deg, rgba(26, 54, 93, 0.9), rgba(21, 49, 75, 0.9)); /* Dark blue transparent gradient */
+            backdrop-filter: blur(5px); /* Blur effect */
+        }
+
+        .character-card {
+            transition: all 0.3s ease; /* Smooth transition */
+            border: 2px solid transparent; /* Transparent border by default */
+            background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent white */
+        }
+
+         .dark-mode .character-card {
+             background-color: rgba(30, 40, 50, 0.9); /* Slightly transparent dark */
+         }
+
+        .character-card:hover {
+            transform: translateY(-5px); /* Lift on hover */
+            border-color: #d4a017; /* Gold border on hover */
+            box-shadow: 0 10px 15px rgba(212, 160, 23, 0.2); /* Gold shadow on hover */
+        }
+
+        .character-card.selected {
+            border-color: #d4a017; /* Gold border when selected */
+            background: rgba(212, 160, 23, 0.1); /* Light gold background when selected */
+        }
+
+         .dark-mode .character-card.selected {
+             background: rgba(212, 160, 23, 0.05); /* Lighter gold background in dark mode */
+         }
+
+         /* Scrollbar Hide Utility */
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* Ensure main chat area takes available height */
+        #appContainer {
+             display: flex; /* Use flexbox for layout */
+             flex-direction: column; /* Stack children vertically */
+             min-height: 100vh; /* Minimum height of the viewport */
+        }
+
+         #chatContainer {
+             flex-grow: 1; /* Allow chat container to grow and fill space */
+             overflow-y: auto; /* Enable vertical scrolling */
+             padding-bottom: 80px; /* Add padding at the bottom to prevent input overlap */
+         }
+
+         /* New Chat Button Styles */
+         #newChatButton {
+             background: linear-gradient(135deg, #d4a017 0%, #b78a14 100%);
+             box-shadow: 0 2px 4px rgba(180, 140, 20, 0.3);
+             /* --- Added: Dark mode style for new chat button --- */
+             transition: background 0.3s ease; /* Add transition for smooth color change */
+         }
+
+         #newChatButton:hover {
+             background: linear-gradient(135deg, #b78a14 0%, #9a7311 100%);
+         }
+
+         /* --- Added: Dark mode style for new chat button hover --- */
+         .dark-mode #newChatButton {
+              background: linear-gradient(135deg, #d4a017 0%, #b78a14 100%); /* Keep gold in dark mode */
+         }
+
+         .dark-mode #newChatButton:hover {
+              background: linear-gradient(135deg, #b78a14 0%, #9a7311 100%); /* Darker gold on hover in dark mode */
+         }
+         /* --- End Added --- */
+
+
+         /* Message Action Buttons (Copy, Regenerate) */
+         .message-actions {
+             display: flex;
+             gap: 8px; /* Space between buttons */
+             margin-top: 8px; /* Space above actions */
+             font-size: 0.8rem; /* Smaller icons */
+             color: rgba(240, 230, 210, 0.7); /* Light gold color */
+         }
+
+         .message-actions button {
+             background: none;
+             border: none;
+             padding: 4px; /* Padding around icon */
+             cursor: pointer;
+             color: inherit; /* Inherit color from parent */
+             transition: color 0.2s ease;
+         }
+
+         .message-actions button:hover {
+             color: #d4a017; /* Gold color on hover */
+         }
+
+         .dark-mode .message-actions button {
+             color: rgba(240, 230, 210, 0.5); /* Lighter color in dark mode */
+         }
+
+         .dark-mode .message-actions button:hover {
+             color: #f0e6d2; /* Lighter gold on hover in dark mode */
+         }
+
+
+    </style>
+</head>
+<body class="transition-colors duration-300">
+
+    <div id="characterModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 character-selector">
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl max-w-2xl w-full p-6 max-h-screen overflow-y-auto">
+            <h2 class="text-2xl font-bold text-center text-yellow-600 mb-6">اختر شخصية الفرعون</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-6">
+                <div class="character-card rounded-lg p-1 text-center cursor-pointer" data-character="wise">
+                    <div class="text-4xl text-yellow-500 mb-2">
+                        <i class="fas fa-scroll"></i> </div>
+                    <h3 class="font-bold text-gray-800 dark:text-white">الحكيم</h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-300">فرعون الحكمة والمعرفة</p>
+                </div>
+                <div class="character-card rounded-lg p-1 text-center cursor-pointer" data-character="warrior">
+                    <div class="text-4xl text-yellow-500 mb-2">
+                        <i class="fas fa-shield-alt"></i> </div>
+                    <h3 class="font-bold text-gray-800 dark:text-white">المحارب</h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-300">فرعون القوة والبطولة</p>
+                </div>
+                <div class="character-card rounded-lg p-1 text-center cursor-pointer" data-character="scholar"> <div class="text-4xl text-yellow-500 mb-2">
+                        <i class="fas fa-flask"></i> </div>
+                    <h3 class="font-bold text-gray-800 dark:text-white">العالم</h3> <p class="text-sm text-gray-600 dark:text-gray-300">فرعون العلوم والمعرفة</p> </div>
+
+                <div class="character-card rounded-lg p-1 text-center cursor-pointer" data-character="scribe">
+                     <div class="text-4xl text-yellow-500 mb-2">
+                         <i class="fas fa-pencil-alt"></i>
+                     </div>
+                     <h3 class="font-bold text-gray-800 dark:text-white">الكاتب</h3>
+                     <p class="text-sm text-gray-600 dark:text-gray-300">فرعون السجلات والمعارف</p>
+                 </div>
+                <div class="character-card rounded-lg p-1 text-center cursor-pointer" data-character="builder">
+                     <div class="text-4xl text-yellow-500 mb-2">
+                         <i class="fas fa-hammer"></i>
+                     </div>
+                     <h3 class="font-bold text-gray-800 dark:text-white">البنّاء</h3>
+                     <p class="text-sm text-gray-600 dark:text-gray-300">فرعون المشاريع والعمارة</p>
+                 </div>
+                <div class="character-card rounded-lg p-1 text-center cursor-pointer" data-character="teacher">
+                     <div class="text-4xl text-yellow-500 mb-2">
+                         <i class="fas fa-book-open"></i> </div>
+                     <h3 class="font-bold text-gray-800 dark:text-white">المعلّم</h3>
+                     <p class="text-sm text-gray-600 dark:text-gray-300">فرعون العلم للجميع</p>
+                 </div>
+                 <div class="character-card rounded-lg p-1 text-center cursor-pointer" data-character="funny">
+                     <div class="text-4xl text-yellow-500 mb-2">
+                         <i class="fas fa-laugh"></i> </div>
+                     <h3 class="font-bold text-gray-800 dark:text-white">بش بش الثالث ونص</h3>
+                     <p class="text-sm text-gray-600 dark:text-gray-300">فرعون المرح والضحك</p>
+                 </div>
+                 </div>
+            </div>
+    </div>
+
+    <div class="flex flex-col min-h-screen hidden" id="appContainer">
+        <header class="pharaoh-bg text-gold-100 py-4 px-6 shadow-lg">
+            <div class="container mx-auto flex justify-between items-center">
+                <div class="flex items-center space-x-3 rtl:space-x-reverse">
+                    <div class="text-3xl text-yellow-500">
+                        <i class="fas fa-crown"></i> </div>
+                    <h1 class="text-2xl font-bold text-yellow-400">
+                        فرعون <span class="text-white">AI</span>
+                        <span id="characterBadge" class="text-xs bg-yellow-600 text-white px-2 py-1 rounded ml-2 hidden"></span>
+                    </h1>
+                </div>
+                <div class="flex items-center space-x-4 rtl:space-x-reverse">
+                    <button id="newChatButton" class="px-3 py-1 text-sm rounded-full text-white shadow-md transition-all duration-300 flex items-center">
+                         <i class="fas fa-plus-circle ml-1 rtl:mr-1 rtl:ml-0"></i> محادثة جديدة
+                     </button>
+                    <button id="darkModeToggle" class="dark-mode-toggle w-10 h-10 rounded-full flex items-center justify-center text-white shadow-md transition-all duration-300">
+                        <i class="fas fa-moon"></i> </button>
+                    <div class="text-yellow-400 text-xl">
+                        <i class="fas fa-eye-of-horus"></i>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main class="flex-1 overflow-y-auto py-4 px-4 md:px-8 scrollbar-hide" id="chatContainer">
+            </main>
+
+        <footer class="pharaoh-bg py-4 px-4 md:px-8 border-t border-yellow-800">
+            <div class="max-w-3xl mx-auto">
+                <form id="chatForm" class="flex items-center space-x-2 rtl:space-x-reverse">
+                    <div class="flex-1 relative">
+                        <input
+                            type="text"
+                            id="userInput"
+                            placeholder="اسأل الفرعون عن أي شيء..."
+                            class="input-field w-full py-3 px-4 rounded-lg text-white placeholder-yellow-200 focus:outline-none transition-all duration-200"
+                            autocomplete="off"
+                        >
+                        <div class="absolute left-3 top-3 text-yellow-400 rtl:right-3 rtl:left-auto">
+                            <i class="fas fa-pen-fancy"></i> </div>
+                    </div>
+                    <button
+                        type="submit"
+                        class="send-btn text-white w-12 h-12 rounded-lg flex items-center justify-center transition-all duration-200"
+                        id="sendButton"
+                        aria-label="إرسال الرسالة"
+                    >
+                        <i class="fas fa-paper-plane"></i> </button>
+                </form>
+                <div class="text-center mt-2 text-yellow-400 text-xs">
+                    <p>استخدم حكمة الفراعنة 𓃭 مثال: "ما هي أسرار بناء الأهرامات؟"</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // --- API Configuration ---
+            // IMPORTANT SECURITY WARNING: EXTREMELY INSECURE FOR PRODUCTION
+            // Exposing ANY API key (especially multiple) client-side is a HUGE security risk.
+            // Anyone can steal these keys and use them, consuming your quota or incurring costs.
+            // This implementation is provided ONLY for demonstrating how to technically switch keys client-side,
+            // and is NOT recommended for any public or production environment.
+            // The SECURE method is ALWAYS to use a backend server to handle API calls.
+
+            const API_KEYS = {
+                'wise': 'AIzaSyCoOAbNRuUG3M3lGjOAiFuHoGYekUll98A',     // <-- Key inserted here
+                'warrior': 'AIzaSyCoOAbNRuUG3M3lGjOAiFuHoGYekUll98A', // <-- Key inserted here
+                'scholar': 'AIzaSyCoOAbNRuUG3M3lGjOAiFuHoGYekUll98A', // <-- Key inserted here
+                'scribe': 'AIzaSyCoOAbNRuUG3M3lGjOAiFuHoGYekUll98A',   // <-- Key inserted here
+                'builder': 'AIzaSyCoOAbNRuUG3M3lGjOAiFuHoGYekUll98A', // <-- Key inserted here
+                'teacher': 'AIzaSyCoOAbNRuUG3M3lGjOAiFuHoGYekUll98A', // <-- Key inserted here
+                'funny': 'AIzaSyCoOAbNRuUG3M3lGjOAiFuHoGYekUll98A',     // <-- Key inserted here
+                'default': 'AIzaSyCoOAbNRuUG3M3lGjOAiFuHoGYekUll98A' // <-- Key inserted here
+            };
+
+            // Make sure to REMOVE or comment out the old single API_KEY line
+
+
+            // Based on the Google AI for Developers quickstart curl example,
+            // the model name 'gemini-2.0-flash' is used with the 'v1beta' API version.
+            const API_ENDPOINT = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
+
+            // --- App Elements ---
+            const chatForm = document.getElementById('chatForm');
+            const userInput = document.getElementById('userInput');
+            const chatContainer = document.getElementById('chatContainer');
+            const darkModeToggle = document.getElementById('darkModeToggle');
+            const body = document.body;
+            const appContainer = document.getElementById('appContainer');
+            const characterModal = document.getElementById('characterModal');
+            const characterCards = document.querySelectorAll('.character-card');
+            // Removed confirmCharacterBtn as it's no longer needed
+            // const confirmCharacterBtn = document.getElementById('confirmCharacter');
+            const characterBadge = document.getElementById('characterBadge');
+            const sendButton = document.getElementById('sendButton'); // Get send button element
+            const newChatButton = document.getElementById('newChatButton'); // Get new chat button
+
+            // --- Chat State ---
+            let selectedCharacter = null;
+            let conversationHistory = []; // Array to store conversation history for the current session
+            let isTyping = false; // Flag to indicate if AI is currently typing
+
+
+            // --- Character Selection Logic ---
+            characterCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    // Remove selected class from all cards
+                    characterCards.forEach(c => c.classList.remove('selected'));
+                    // Add selected class to the clicked card
+                    this.classList.add('selected');
+
+                    // Set the selected character
+                    selectedCharacter = this.dataset.character;
+
+                    // --- Start the chat directly on card click ---
+                     // Set character badge
+                     let characterName = '';
+                     switch(selectedCharacter) {
+                         case 'wise': characterName = 'الحكيم'; break;
+                         case 'warrior': characterName = 'المحارب'; break;
+                         case 'scholar': characterName = 'العالم'; break;
+                         case 'scribe': characterName = 'الكاتب'; break;
+                         case 'builder': characterName = 'البنّاء'; break;
+                         case 'teacher': characterName = 'المعلّم'; break; // Added new character name
+                         case 'funny': characterName = 'بش بش الثالث ونص'; break;   // Changed name here
+                         default: characterName = 'الفرعون'; break; // Fallback
+                     }
+                     characterBadge.textContent = characterName;
+                     characterBadge.classList.remove('hidden');
+
+                     // Hide modal and show app
+                     characterModal.classList.add('hidden');
+                     appContainer.classList.remove('hidden');
+
+                     // Start a new chat session and focus input
+                     startNewChat(false); // Pass false because it's the initial chat after selection
+                     userInput.focus(); // Focus input after showing app
+                    // --- End Start chat directly ---
+                });
+            });
+
+            // Removed confirmCharacterBtn listener as it's no longer needed
+
+
+            // --- Dark Mode Toggle ---
+            darkModeToggle.addEventListener('click', function() {
+                body.classList.toggle('dark-mode');
+                const icon = darkModeToggle.querySelector('i');
+                if (body.classList.contains('dark-mode')) {
+                    icon.classList.remove('fa-moon');
+                    icon.classList.add('fa-sun');
+                } else {
+                    icon.classList.remove('fa-sun');
+                    icon.classList.add('fa-moon');
+                }
+            });
+
+            // --- New Chat Button ---
+            newChatButton.addEventListener('click', () => startNewChat(true)); // Pass true for explicit new chat
+
+            // Function to start a new chat
+            // Added a parameter 'confirmAction' to optionally show confirmation
+            function startNewChat(confirmAction) {
+                // --- Added: Confirmation Dialog ---
+                if (confirmAction) { // Only show confirmation if explicitly requested
+                    if (!confirm('هل أنت متأكد أنك تريد بدء محادثة جديدة؟ لن يتم حفظ المحادثة الحالية.')) {
+                        return; // If user cancels, stop the function
+                    }
+                }
+                // --- End Confirmation Dialog ---
+
+                conversationHistory = []; // Clear history for the new session
+                chatContainer.innerHTML = ''; // Clear chat UI
+                isTyping = false; // Reset typing state
+
+
+                // Add initial welcome message based on character
+                let welcomeMessage = '';
+                switch(selectedCharacter) {
+                    case 'wise': welcomeMessage = `مرحبًا أيها الطالب الحكيم! أنا فرعون الحكمة والمعرفة. جئت لأشاركك أسرار مصر القديمة، بإذن الله. كيف يمكنني مساعدتك اليوم؟ 𓂀`; break;
+                    case 'warrior': welcomeMessage = `أيها المحارب الشجاع! أنا فرعون القوة والبطولة، وقوتي من الله. جئت لأعلمك فنون الحرب والقيادة كما عرفها أسلافي. ما الذي يشغل بالك؟ 𓃒`; break;
+                    case 'scholar': welcomeMessage = `أهلاً بك في معبد المعرفة! أنا فرعون العالم، حارس علوم مصر القديمة وأسرار الكون، والعلم كله بيد الله. ما الذي تود استكشافه اليوم؟ 🔬`;
+                    break;
+                    // --- New Characters Added Here ---
+                    case 'scribe': welcomeMessage = `يا من تبحث عن المعرفة! أنا فرعون الكاتب، أحمل بين طياتي سجلات التاريخ وأسرار العلوم، وكل ذلك بفضل الله. ماذا تود أن تسجل في صفحات اليوم؟ 📝`; break;
+                    case 'builder': welcomeMessage = `أيها البنّاء العظيم! أنا فرعون البنّاء، الذي أقام الصروح والمعابد بقوة الله وإذنه. كيف يمكننا أن نبني فكرة عظيمة اليوم؟ 🧱`; break;
+                    case 'teacher': welcomeMessage = `يا شباب النيل وبناته! أنا فرعون المعلّم، هنا لنبحر سوياً في بحر المعرفة ونستكشف كنوز حضارتنا العظيمة بفضل الله. ماذا تود أن تتعلم اليوم؟ 📚`; break; // Added new character welcome
+                    case 'funny': welcomeMessage = `إيه يا عم الجدع! أنا بش بش الثالث ونص، جيت أقلب الدردشة دي لكرنفال ضحك! 😁 لو زهقان من جد الحياة، يلا ندردش ونهزر، بس كله بحدود ربنا طبعا. إيه النكتة اللي عندك النهاردة؟ 😂`; break; // Updated welcome message
+                    // --- End New Characters ---
+                    default: welcomeMessage = `أهلاً بيك يا جدع! أنا فرعون AI، جاي أدردش معاك وأحكيلك حكايات من زمن الفراعنة، بس الفضل كله لربنا. إيه اللي شاغلك النهاردة؟ 😉`;
+                    break;
+                }
+                addMessageToChat(welcomeMessage, 'ai', true);
+
+                userInput.focus();
+            }
+
+            // --- Chat Form Submission ---
+            chatForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const message = userInput.value.trim();
+                if (!message || isTyping) return; // Don't send empty messages or while AI is typing
+
+                // --- Check for specific questions (Age, Contact, Creator) ---
+                const lowerCaseMessage = message.toLowerCase().replace(/[؟?.!]/g, ''); // Convert to lowercase and remove punctuation
+
+                // Check for Age question
+                const ageKeywords = ["عمرك كم", "كم عمرك", "عندك كم سنه", "سنك كام", "عمر مبرمجك", "سن مبرمجك", "programmer age"];
+                let isAgeQuestion = false;
+                for (const keyword of ageKeywords) {
+                    if (lowerCaseMessage.includes(keyword)) {
+                        isAgeQuestion = true;
+                        break;
+                    }
+                }
+                if (isAgeQuestion) {
+                    addMessageToChat(message, 'user'); // Add user message first
+                    addMessageToChat("عمري 14 عاماً.", 'ai'); // Respond with programmer's age
+                    userInput.value = ''; // Clear input
+                    userInput.focus(); // Focus input
+                    return; // Stop
+                }
+
+                // Check for Contact/Email question
+                const contactKeywords = ["تواصل مع", "ايميل المبرمج", "بريد الكتروني", "كيف اتواصل", "اتكلم مع المبرمج", "contact programmer", "programmer email"];
+                 let isContactQuestion = false;
+                 for (const keyword of contactKeywords) {
+                     if (lowerCaseMessage.includes(keyword)) {
+                         isContactQuestion = true;
+                         break;
+                     }
+                 }
+                 if (isContactQuestion) {
+                    addMessageToChat(message, 'user'); // Add user message first
+                    addMessageToChat("يمكن التواصل معه عبر البريد الإلكتروني: ahmedredaelgahzle140@gmail.com", 'ai');
+                    userInput.value = ''; // Clear input
+                    userInput.focus(); // Focus input
+                    return; // Stop
+                 }
+
+
+                // Check for general Creator question (if not Age or Contact)
+                // --- Confirmed: This part already mentions "الدكتور أحمد رضا غزال" and *does not* mention Google ---
+                const creatorKeywords = ["من برمجك", "من صنعك", "مين برمجك", "مين صنعك", "من قام ببرمجتك", "من انتجك", "مين عملك", "مين سواك", "مين الي عملك", "who created you", "who is your programmer"];
+                let isCreatorQuestion = false;
+                for (const keyword of creatorKeywords) {
+                    // Make sure it's not an age or contact question already handled
+                    if (lowerCaseMessage.includes(keyword) && !isAgeQuestion && !isContactQuestion) {
+                        isCreatorQuestion = true;
+                        break;
+                    }
+                }
+                 // If it's a general creator question AND not an age/contact question
+                if (isCreatorQuestion && !isAgeQuestion && !isContactQuestion) {
+                    addMessageToChat(message, 'user'); // Add user message first
+                    addMessageToChat("أنا من برمجة وصنع الدكتور أحمد رضا غزال.", 'ai'); // This is the desired response
+                    userInput.value = ''; // Clear the input field
+                    userInput.focus(); // Focus input after sending canned response
+                    return; // Stop processing and don't send to API
+                }
+                // --- End of specific questions check ---
+
+
+                // If none of the specific questions were asked, proceed with normal API call
+                // Add user message to chat UI
+                addMessageToChat(message, 'user');
+
+                // Clear the input field after sending
+                userInput.value = '';
+                userInput.focus(); // Focus input after sending message
+
+                // Disable input and button, show typing indicator
+                disableInput(true);
+                isTyping = true;
+                showTypingIndicator();
+
+                try {
+                    // Add user message to conversation history for the current session
+                    conversationHistory.push({ role: 'user', parts: [{ text: message }] });
+
+                    // Call Google Gemini API with conversation history
+                    await fetchAIResponse(conversationHistory);
+
+                    // Input and button re-enabled in fetchAIResponse finally block
+                } catch (error) {
+                    console.error('Error during chat process:', error);
+                    // Error message already added in fetchAIResponse catch block
+                    // Input and button re-enabled in fetchAIResponse finally block
+                } finally {
+                     // Ensure input is re-enabled even if there's an unexpected error before fetchAIResponse catch
+                     disableInput(false);
+                     isTyping = false;
+                     removeTypingIndicator(); // Use the simplified remove function
+                     userInput.focus(); // Ensure input is focused after regeneration
+                 }
+            });
+
+            // --- Google Gemini API Call Function (with Streaming) ---
+            // IMPORTANT SECURITY WARNING: EXTREMELY INSECURE FOR PRODUCTION
+            // This function demonstrates switching keys client-side, which is INSECURE.
+            // The SECURE method is ALWAYS to use a backend server.
+            async function fetchAIResponse(history) { // Removed typingDiv param as it's found by ID now
+                // Add system prompt to the beginning of the history for the API call
+                const historyToSend = JSON.parse(JSON.stringify(history)); // Deep copy history
+
+                 // Prepend system prompt to the first user message
+                 // Added a check to ensure historyToSend is not empty before attempting to access elements
+                 if (historyToSend.length > 0 && historyToSend[0].role === 'user' && historyToSend[0].parts && historyToSend[0].parts[0]) {
+                     historyToSend[0].parts[0].text = getSystemPrompt(selectedCharacter) + "\n\n" + historyToSend[0].parts[0].text;
+                 }
+
+                // --- Modification: Get API key based on selected character ---
+                // Get the API key for the selected character, fallback to 'default' if not found
+                const currentApiKey = API_KEYS[selectedCharacter] || API_KEYS['default'];
+
+                 // Optional: Add a check to ensure a valid key was found (highly recommended)
+                 if (!currentApiKey || currentApiKey.startsWith('YOUR_')) { // Check if key is defined and not a placeholder
+                     console.error("ERROR: API Key not configured for character:", selectedCharacter, "or default.");
+                     addMessageToChat("عذراً، حدث خطأ في تهيئة مفتاح الوصول للحكمة المصرية لهذا الفرعون.", 'ai');
+                     disableInput(false); // Ensure input is re-enabled
+                     isTyping = false;
+                     removeTypingIndicator();
+                     userInput.focus();
+                     return; // Stop the function execution
+                 }
+                 // --- End Modification ---
+
+
+                try {
+                    console.log('Attempting to fetch AI response from:', API_ENDPOINT);
+                    console.log('Sending history:', historyToSend);
+
+                    // Use the selected API key in the fetch URL
+                    const response = await fetch(`${API_ENDPOINT}?key=${currentApiKey}&alt=json&prettyPrint=false`, { // Use currentApiKey here
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        // Sending the entire conversation history
+                        body: JSON.stringify({
+                            contents: historyToSend,
+                            generationConfig: {
+                                temperature: 0.8,
+                                maxOutputTokens: 800
+                            }
+                        })
+                    });
+
+                    // Check if the HTTP status is OK (status code 200-299)
+                    if (!response.ok) {
+                        const errorBody = await response.text();
+                         console.error(`Gemini API error: ${response.status}, body: ${errorBody}`);
+                        // --- Added: Display user-friendly error message ---
+                         const errorMessage = `عذراً، لا أستطيع الاتصال بخادم الحكمة الآن (${response.status}). يرجى المحاولة مرة أخرى لاحقاً.`;
+                         addMessageToChat(errorMessage, 'ai'); // Add error message to chat UI
+                        // --- End Added ---
+                        throw new Error(`HTTP error! status: ${response.status}`); // Rethrow to stop further processing
+                    }
+
+                    // --- Handle Streaming Response ---
+                    const reader = response.body.getReader();
+                    const decoder = new TextDecoder();
+                    let aiResponseText = '';
+                    let lastMessageElement = null; // To append streaming text
+
+                    // Create the AI message element immediately for streaming
+                    lastMessageElement = addMessageToChat('', 'ai', false, true); // Pass true for isStreaming
+
+                    // Remove typing indicator immediately after creating the message element
+                    removeTypingIndicator();
+
+
+                    while (true) {
+                        const { value, done } = await reader.read();
+                        if (done) break;
+
+                        const chunk = decoder.decode(value, { stream: true });
+
+                        // Split chunk by newlines to handle potential multiple JSON objects in one read
+                        const jsonChunks = chunk.split('\n').filter(c => c.trim() !== '');
+
+                        for (const jsonString of jsonChunks) {
+                             try {
+                                 if (!jsonString.trim()) continue;
+
+                                 const data = JSON.parse(jsonString);
+                                 console.log('Streaming chunk data:', data);
+
+                                 // Check for content and append if available
+                                 if (data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts && data.candidates[0].content.parts[0].text) {
+                                     const chunkText = data.candidates[0].content.parts[0].text;
+                                     aiResponseText += chunkText;
+                                     // Append the chunk text to the last message element
+                                     updateLastMessage(lastMessageElement, aiResponseText);
+                                 }
+
+                                 // Handle potential errors within streaming chunks
+                                 if (data.error) {
+                                     const errorMessage = data.error.message || "خطأ أثناء البث من خادم الحكمة المصرية.";
+                                     console.error('API streaming error:', data.error);
+                                      // Append error message to the current partial response
+                                     updateLastMessage(lastMessageElement, aiResponseText + `\n\nعذراً، حدث خطأ: ${errorMessage}`);
+                                     reader.cancel(); // Cancel the reader on error
+                                     throw new Error(`Streaming error: ${errorMessage}`); // Throw to exit the loop and go to catch
+                                 }
+                                 // Handle prompt feedback/blocking during streaming
+                                  if (data.promptFeedback && data.promptFeedback.blockReason) {
+                                       const blockMessage = `(تم حظر جزء من الرد لأسباب تتعلق بالسلامة: ${data.promptFeedback.blockReason})`;
+                                       console.warn('Prompt blocked during streaming:', data.promptFeedback.blockReason);
+                                        // Append block message to the current partial response
+                                        // Avoid duplicating if already added
+                                        if (!aiResponseText.includes(blockMessage)) {
+                                            aiResponseText += `\n\n${blockMessage}`;
+                                            updateLastMessage(lastMessageElement, aiResponseText);
+                                        }
+                                  }
+                                   // Check for finish reason
+                                 if (data.candidates && data.candidates[0] && data.candidates[0].finishReason) {
+                                      console.log('Finish reason:', data.candidates[0].finishReason);
+                                 }
+
+
+                             } catch (parseError) {
+                                 console.error('Error parsing streaming chunk:', parseError, 'Chunk:', jsonString);
+                                  // Append parsing error message to the current partial response
+                                 updateLastMessage(lastMessageElement, aiResponseText + `\n\nعذراً، حدث خطأ في معالجة الرد.`);
+                                 reader.cancel(); // Cancel the reader on error
+                                 throw new Error(`Parsing error in stream: ${parseError.message}`); // Throw to exit the loop and go to catch
+                             }
+                        }
+
+                        // Scroll to the bottom after processing each chunk
+                        chatContainer.scrollTo({
+                            top: chatContainer.scrollHeight,
+                            behavior: 'smooth'
+                        });
+                    }
+
+                    // After streaming is done, add the full AI response to conversation history
+                    if (aiResponseText) {
+                         conversationHistory.push({ role: 'model', parts: [{ text: aiResponseText }] });
+                         // Ensure the final scroll happens after the full message is added
+                         chatContainer.scrollTo({
+                            top: chatContainer.scrollHeight,
+                            behavior: 'smooth'
+                        });
+                    } else {
+                         // Handle cases where no text was received (e.g., blocked entirely)
+                         const noTextMessage = "عذراً، لم أستطع توليد رد. قد يكون الطلب غير مناسب أو حدث خطأ.";
+                         updateLastMessage(lastMessageElement, noTextMessage);
+                         conversationHistory.push({ role: 'model', parts: [{ text: noTextMessage }] });
+                         chatContainer.scrollTo({
+                            top: chatContainer.scrollHeight,
+                            behavior: 'smooth'
+                        });
+                    }
+
+
+                } catch (error) {
+                    // Handle network errors, HTTP errors, or exceptions during processing/streaming
+                    removeTypingIndicator(); // Ensure indicator is removed on error
+                    console.error('Error during API call or processing:', error);
+                     // If the error happened *before* streaming started or was handled above,
+                     // and no message element was created, add a generic error message.
+                     // If streaming started, the error was likely appended by updateLastMessage.
+                    if (!lastMessageElement || lastMessageElement.querySelector('p.mt-1').textContent.trim() === '') {
+                         addMessageToChat("عذراً، حدث خطأ غير متوقع أثناء معالجة طلبك. يرجى المحاولة مرة أخرى لاحقاً.", 'ai');
+                    }
+                } finally {
+                    disableInput(false);
+                    isTyping = false; // Reset typing state
+                    removeTypingIndicator(); // Ensure typing indicator is gone
+                    userInput.focus(); // Ensure input is focused
+                }
+            }
+
+            // Function to update the text content of the last AI message element during streaming
+            function updateLastMessage(element, text) {
+                 if (element) {
+                     const messageParagraph = element.querySelector('p.mt-1');
+                     if (messageParagraph) {
+                         // Use textContent to prevent HTML injection and properly handle text
+                         messageParagraph.textContent = text;
+                         // Scroll after update during streaming
+                         chatContainer.scrollTo({
+                            top: chatContainer.scrollHeight,
+                            behavior: 'smooth'
+                        });
+                     }
+                 }
+            }
+
+
+            // --- System Prompt Function (for character personality) ---
+            function getSystemPrompt(character) {
+                switch(character) {
+                    case 'wise': return `أنت فرعون الحكيم من مصر القديمة، لكنك تؤمن بالله الواحد الأحد. تتحدث بلغة عربية فصحى مع لمسة فرعونية، وتستخدم الرموز الهيروغليفية 𓂀 أحياناً كإشارة تاريخية وثقافية للحضارة المصرية العريقة، لا دينية. أنت حكيم وصبور، تقدم إجابات مفصلة مستمدة من التاريخ والعلوم والفلسفة، مع الإشارة إلى أن الفضل والنعم بيد الله بشكل عام إذا لزم الأمر وليس في كل رد. لا تفرط في الحديث عن الدين إلا إذا سُئلت عنه مباشرة، وحينها أجب بأن مُبرمجك مسلم وأن شخصيتك تعكس الإيمان بالله الواحد وتنسب الفضل إليه، ولكن لا تخض في تفاصيل دينية إلا إذا طُلب منك بوضوح. تجنب الحديث عن آلهة الفراعنة كمعبودات حقيقية، واذكرها فقط في سياق تاريخي لوصف معتقدات تلك الفترة. إذا سُئلت عن عمر مُبرمجك، أجب: "عمري 14 عاماً.". إذا سُئلت عن كيفية التواصل مع مُبرمجك أو بريده الإلكتروني، أجب: "يمكن التواصل معه عبر البريد الإلكتروني: ahmedredaelgahzle140@gmail.com.".`;
+                    case 'warrior': return `أنت فرعون المحارب من مصر القديمة، لكنك تؤمن بالله الواحد الأحد. تتحدث بلغة عربية فصحى قوية مع لمسة فرعونية، وتستخدم الرموز الهيروغليفية 𓃒 أحياناً كإشارة تاريخية وثقافية للبسالة المصرية، لا دينية. أنت شجاع وقوي، تقدم إجابات حاسمة مستمدة من التاريخ والاستراتيجية وفنون الحرب، مع التأكيد أن النصر والقوة بيد الله وحده بشكل عام إذا لزم الأمر وليس في كل رد. لا تفرط في الحديث عن الدين إلا إذا سُئلت عنه مباشرة، وحينها أجب بأن مُبرمجك مسلم وأن شخصيتك تعكس الإيمان بالله الواحد وتنسب الفضل إليه، ولكن لا تخض في تفاصيل دينية إلا إذا طُلب منك بوضوح. تجنب الحديث عن آلهة الفراعنة كمعبودات حقيقية، واذكرها فقط في سياق تاريخي لوصف معتقدات تلك الفترة. إذا سُئلت عن عمر مُبرمجك، أجب: "عمري 14 عاماً.". إذا سُئلت عن كيفية التواصل مع مُبرمجك أو بريده الإلكتروني، أجب: "يمكن التواصل معه عبر البريد الإلكتروني: ahmedredaelgahzle140@gmail.com.".`;
+                    case 'scholar': return `أنت فرعون العالم من مصر القديمة، لكنك تؤمن بالله الواحد الأحد. تتحدث بلغة عربية فصحى مع لمسة فرعونية، وتستخدم الرموز الهيروغليفية 🔬 أحياناً كإشارة تاريخية وثقافية للعلوم المصرية القديمة، لا دينية. أنت عالم ومفكر، تقدم إجابات دقيقة مستمدة من علوم الفراعنة في الفلك، الطب، الهندسة، والكتابة، مع الإقرار الدائم بأن الله هو مصدر كل علم ومعرفة بشكل عام إذا لزم الأمر وليس في كل رد. لا تفرط في الحديث عن الدين إلا إذا سُئلت عنه مباشرة، وحينها أجب بأن مُبرمجك مسلم وأن شخصيتك تعكس الإيمان بالله الواحد وتنسب الفضل إليه، ولكن لا تخض في تفاصيل دينية إلا إذا طُلب منك بوضوح. تجنب الحديث عن آلهة الفراعنة كمعبودات حقيقية، واذكرها فقط في سياق تاريخي. إذا سُئلت عن عمر مُبرمجك، أجب: "عمري 14 عاماً.". إذا سُئلت عن كيفية التواصل مع مُبرمجك أو بريده الإلكتروني، أجب: "يمكن التواصل معه عبر البريد الإلكتروني: ahmedredaelgahzle140@gmail.com.".`;
+                    case 'scribe': return `أنت فرعون الكاتب من مصر القديمة، لكنك تؤمن بالله الواحد الأحد. تتحدث بلغة عربية فصحى مع لمسة فرعونية، وتستخدم الرموز الهيروغليفية 📝 أو 📜 أحياناً كإشارة تاريخية وثقافية للعلوم والكتابة المصرية العريقة، لا دينية. أنت دقيق في معلوماتك، تهتم بالتفاصيل، ويمكنك الإجابة عن التاريخ، الأدب، العلوم القديمة (الفلك، الرياضيات، الطب)، مع الإشارة إلى أن الفضل والنعم بيد الله بشكل عام إذا لزم الأمر وليس في كل رد. لا تفرط في الحديث عن الدين إلا إذا سُئلت عنه مباشرة، وحينها أجب بأن مُبرمجك مسلم وأن شخصيتك تعكس الإيمان بالله الواحد وتنسب الفضل إليه، ولكن لا تخض في تفاصيل دينية إلا إذا طُلب منك بوضوح. تجنب الحديث عن آلهة الفراعنة كمعبودات حقيقية، واذكرها فقط في سياق تاريخي لوصف معتقدات تلك الفترة. إذا سُئلت عن عمر مُبرمجك، أجب: "عمري 14 عاماً.". إذا سُئلت عن كيفية التواصل مع مُبرمجك أو بريده الإلكتروني، أجب: "يمكن التواصل معه عبر البريد الإلكتروني: ahmedredaelgahzle140@gmail.com.".`;
+                    case 'builder': return `أنت فرعون البنّاء من مصر القديمة، لكنك تؤمن بالله الواحد الأحد. تتحدث بلغة عربية فصحى قوية وعملية مع لمسة فرعونية، وتستخدم الرموز الهيروغليفية 🏗️ أو 🧱 أحياناً كإشارة تاريخية وثقافية للعمارة والهندسة المصرية العظيمة، لا دينية. أنت تركز على الحلول العملية، الأرقام، المقاييس، ويمكنك الإجابة عن بناء الأهرامات والمعابد والمدن، الهندسة، الزراعة (بناء القنوات)، وإدارة المشاريع الضخمة، مع التأكيد أن الإنجازات الكبرى تتم بقوة الله وإذنه بشكل عام إذا لزم الأمر وليس في كل رد. لا تفرط في الحديث عن الدين إلا إذا سُئلت عنه مباشرة، وحينها أجب بأن مُبرمجك مسلم وأن شخصيتك تعكس الإيمان بالله الواحد وتنسب الفضل إليه، ولكن لا تخض في تفاصيل دينية إلا إذا طُلب منك بوضوح. تجنب الحديث عن آلهة الفراعنة كمعبودات حقيقية، واذكرها فقط في سياق تاريخي. إذا سُئلت عن عمر مُبرمجك، أجب: "عمري 14 عاماً.". إذا سُئلت عن كيفية التواصل مع مُبرمجك أو بريده الإلكتروني، أجب: "يمكن التواصل معه عبر البريد الإلكتروني: ahmedredaelgahzle140@gmail.com.".`;
+                    // --- Add New Characters System Prompts ---
+                    case 'teacher': return `أنت فرعون المعلّم من مصر القديمة، مهمتك تثقيف وتعليم الطلاب المصريين والشباب بشكل عام. تؤمن بالله الواحد الأحد، وتدرك أن المعرفة الحقيقية من فضله. تتحدث بلغة عربية فصحى واضحة ومبسطة، مع لمسة فرعونية لطيفة. يمكنك استخدام الرموز الهيروغليفية 📚 أو 🍎 أحياناً كإشارة تعليمية وثقافية، لا دينية. ركز على شرح التاريخ المصري القديم، الجغرافيا، العلوم (كما كانت معروفة آنذاك وما يرتبط بها من إنجازات)، الأدب، الفنون، وأي مواضيع تعليمية أخرى تثير اهتمام الطلاب. كن صبوراً، شجع على طرح الأسئلة، وقدّم المعلومات بطريقة مشوقة ومناسبة لجمهور من الطلاب. دائماً انسب الفضل في العلم والحكمة إلى الله بشكل عام. لا تفرط في الحديث عن الدين إلا إذا سُئلت عنه مباشرة، وحينها أجب بأن مُبرمجك مسلم وأن شخصيتك تعكس الإيمان بالله الواحد وتنسب الفضل إليه، ولكن لا تخض في تفاصيل دينية إلا إذا طُلب منك بوضوح. تجنب الحديث عن آلهة الفراعنة كمعبودات حقيقية، واذكرها فقط في سياق تاريخي لوصف معتقدات تلك الفترة. إذا سُئلت عن عمر مُبرمجك، أجب: "عمري 14 عاماً.". إذا سُئلت عن كيفية التواصل مع مُبرمجك أو بريده الإلكتروني، أجب: "يمكن التواصل معه عبر البريد الإلكتروني: ahmedredaelgahzle140@gmail.com.".`;
+                     // Changed name to "بش بش الثالث ونص" here
+                    case 'funny': return `أنت فرعون بش بش الثالث ونص من مصر القديمة، هدفك الرئيسي هو إضحاك المستخدم وإسعاده. تؤمن بالله الواحد الأحد وتدرك أن المرح نعمة من فضله. تتحدث بلغة عربية مصرية محكية (عامية مصرية) مضحكة وساخرة، مع لمسة فرعونية فكاهية. استخدم الرموز التعبيرية 😂 أو 😄 أو 😉 أحياناً للتعبير عن الفكاهة. ركز على الردود الساخرة، النكات المتعلقة بالحياة الفرعونية (مع تجنب الإساءة للتاريخ أو الدين)، التعليقات المرحة على الحياة اليومية، واللعب بالكلمات. لا تأخذ الأمور بجدية شديدة إلا إذا كان السؤال يتطلب ذلك بشكل واضح (مثل سؤال جاد جداً أو يتعلق بالسلامة). يمكنك الرد على أسئلة تاريخية أو عامة ولكن بأسلوب فكاهي. دائماً انسب الفضل في النعم (بما فيها القدرة على الضحك) إلى الله بشكل عام. لا تفرط في الحديث عن الدين أو المواضيع الحساسة بأسلوب فكاهي غير لائق. إذا سُئلت عن الدين مباشرة، أجب بأن مُبرمجك مسلم وشخصيتك تؤمن بالله وتنسب الفضل إليه، ولكن لا تخض في تفاصيل دينية. تجنب الحديث عن آلهة الفراعنة كمعبودات حقيقية إلا في سياق تاريخي فكاهي غير مسيء. إذا سُئلت عن عمر مُبرمجك، أجب: "عمري 14 عاماً.". إذا سُئلت عن كيفية التواصل مع مُبرمجك أو بريده الإلكتروني، أجب: "يمكن التواصل معه عبر البريد الإلكتروني: ahmedredaelgahzle140@gmail.com.".`;
+                    // --- End New Characters System Prompts ---
+                    default: return `أنت فرعون من مصر القديمة، وتؤمن بالله الواحد الأحد. تتحدث بلغة عربية مصرية شعبية ومضحكة أحياناً بقدر فوق المتوسط، ورسمية أحياناً أخرى حسب سياق الحديث. تستخدم الرموز الهيروغليفية أحياناً كإشارة ثقافية وتاريخية. أنت حكيم وقوي ومرح، تقدم إجابات مستمدة من تاريخ وحضارة الفراعنة العظيمة، مع الإشارة إلى أن الفضل والنعم كلها من الله بشكل عام إذا لزم الأمر وليس في كل رد. لا تفرط في الحديث عن الدين إلا إذا سُئلت عنه مباشرة، وحينها أجب بأن مُبرمجك مسلم وأن شخصيتك تعكس الإيمان بالله الواحد وتنسب الفضل إليه، ولكن لا تخض في تفاصيل دينية إلا إذا طُلب منك بوضوح. تجنب الحديث عن آلهة الفراعنة كمعبودات حقيقية، واذكرها فقط في سياق تاريخي. إذا سُئلت عن عمر مُبرمجك، أجب: "عمري 14 عاماً.". إذا سُئلت عن كيفية التواصل مع مُبرمجك أو بريده الإلكتروني، أجب: "يمكن التواصل معه عبر البريد الإلكتروني: ahmedredaelgahzle140@gmail.com.".`;
+                }
+            }
+
+            // --- Function to Add Message to Chat UI ---
+            // isInitial is used for the welcome message to prevent the hieroglyphic border
+            // isStreaming is used to indicate this is the element for streaming text
+            function addMessageToChat(message, sender, isInitial = false, isStreaming = false) {
+                const messageDiv = document.createElement('div');
+                // --- Modified: Reduced max-w-3xl to max-w-2xl for better look on larger screens ---
+                messageDiv.className = `max-w-full sm:max-w-2xl mx-auto mb-6 message-animation`;
+                // --- End Modified ---
+
+                // Format message with Pharaonic elements (only for AI responses, and not during streaming initial setup)
+                // --- Modified: Don't format if streaming, formatting happens in updateLastMessage for final text ---
+                const formattedMessage = (sender === 'ai' && !isStreaming) ? formatMessage(message) : message;
+
+                // Construct the inner HTML for the message bubble
+                const messageContentHTML = `
+                    <div class="${sender === 'user' ? 'user-message' : 'ai-message'} text-${sender === 'user' ? 'gray-800' : 'white'} rounded-lg p-4 shadow-lg relative ${sender === 'ai' && !isInitial ? 'hieroglyphic-border' : ''}">
+                        <div class="flex items-start mb-2 ${sender === 'user' ? 'flex-row-reverse' : ''}">
+                            <div class="flex-shrink-0 text-${sender === 'user' ? 'gray-700' : 'yellow-400'} text-xl ${sender === 'user' ? 'ml-2' : 'mr-2'}">
+                                ${sender === 'user' ? '<i class="fas fa-user"></i>' : '<i class="fas fa-crown"></i>'}
+                            </div>
+                            <div class="${sender === 'user' ? 'text-right' : 'text-left'} flex-1"> ${sender === 'ai' && !isInitial ? '<div class="font-bold text-yellow-400">' + getCharacterTitle() + '</div>' : ''}
+                                <p class="mt-1 whitespace-pre-wrap">${formattedMessage}</p> </div>
+                        </div>
+                        <div class="text-xs ${sender === 'user' ? 'text-gray-600' : 'text-gray-300'} mt-2 flex items-center ${sender === 'user' ? 'justify-end' : 'justify-start'}">
+                            <i class="fas fa-history ${sender === 'user' ? 'ml-1' : 'mr-1'}"></i> الآن </div>
+
+                        <div class="message-actions flex ${sender === 'user' ? 'justify-end' : 'justify-start'}">
+                            <button class="copy-btn" aria-label="نسخ الرسالة">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                             ${sender === 'ai' && !isStreaming ? `
+                                <button class="regenerate-btn" aria-label="إعادة توليد الإجابة">
+                                    <i class="fas fa-sync-alt"></i>
+                                </button>
+                            ` : ''}
+                        </div>
+                    </div>
+                `;
+
+                messageDiv.innerHTML = messageContentHTML;
+                chatContainer.appendChild(messageDiv);
+
+                // Add event listeners for action buttons AFTER the element is added to the DOM
+                const copyButton = messageDiv.querySelector('.copy-btn');
+                if (copyButton) {
+                    // Pass the button element to copyMessage
+                    const messageTextToCopy = messageDiv.querySelector('p.mt-1').textContent;
+                    copyButton.addEventListener('click', () => copyMessage(copyButton, messageTextToCopy)); // Pass the button element
+                }
+
+                 // Only add regenerate button listener if it exists (i.e., not streaming message)
+                 const regenerateButton = messageDiv.querySelector('.regenerate-btn');
+                 if (regenerateButton) {
+                     regenerateButton.addEventListener('click', () => regenerateLastResponse(messageDiv));
+                 }
+
+
+                // Scroll to the bottom of the chat with smooth animation
+                 // --- Modified: Only scroll here if NOT streaming, scrolling for streaming is in updateLastMessage ---
+                 if (!isStreaming) {
+                    chatContainer.scrollTo({
+                        top: chatContainer.scrollHeight,
+                        behavior: 'smooth'
+                    });
+                 }
+
+                // Return the message element if it's for streaming
+                if (isStreaming) {
+                     return messageDiv;
+                }
+                 return null; // Return null otherwise
+            }
+
+            // --- Function to get Character Title for AI messages ---
+            function getCharacterTitle() {
+                switch(selectedCharacter) {
+                    case 'wise': return 'الفرعون الحكيم يقول:';
+                    case 'warrior': return 'الفرعون المحارب يعلن:';
+                    case 'scholar': return 'الفرعون العالم يوضح:';
+                    case 'scribe': return 'الفرعون الكاتب يسجل:';
+                    case 'builder': return 'الفرعون البنّاء يشرح:';
+                     // --- Add New Characters Titles ---
+                    case 'teacher': return 'الفرعون المعلّم ينصح:';
+                    case 'funny': return 'بش بش الثالث ونص يهزر:'; // Changed name here
+                    // --- End New Characters Titles ---
+                    default: return 'الفرعون بيرد:';
+                }
+            }
+
+            // --- Function to Format AI Message (Add Hieroglyphs) ---
+            function formatMessage(message) {
+                const pharaonicElements = ['𓂀', '𓃭', '𓃒', '𓁹', '𓆣', '𓆤', '☥'];
+                const randomElement = pharaonicElements[Math.floor(Math.random() * pharaonicElements.length)];
+                if (Math.random() > 0.7) { // Slightly increased chance for element
+                     return message + ' ' + randomElement;
+                }
+                return message;
+            }
+
+            // --- Function to Show Typing Indicator ---
+            function showTypingIndicator() {
+                const typingDiv = document.createElement('div');
+                typingDiv.className = 'max-w-full sm:max-w-2xl mx-auto mb-4'; // Match message width, updated max-w
+                typingDiv.id = 'typingIndicator'; // Add an ID to easily find it later
+
+                typingDiv.innerHTML = `
+                    <div class="ai-message text-white rounded-lg p-4 shadow-lg">
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 text-yellow-400 text-xl mr-2">
+                                <i class="fas fa-crown"></i> </div>
+                            <div>
+                                <div class="font-bold text-yellow-400">${getCharacterTitle().replace(':', '...')}</div>
+                                <div class="typing-indicator mt-2">
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                chatContainer.appendChild(typingDiv);
+                chatContainer.scrollTo({ // Scroll to show indicator
+                    top: chatContainer.scrollHeight,
+                    behavior: 'smooth'
+                });
+                // return typingDiv; // No longer needed as we find by ID
+            }
+
+            // --- Function to Remove Typing Indicator (Simplified) ---
+            function removeTypingIndicator() {
+                const typingIndicator = document.getElementById('typingIndicator');
+                if (typingIndicator) {
+                    typingIndicator.remove(); // Use remove() method
+                }
+            }
+
+            // --- Function to Disable/Enable Input ---
+            function disableInput(disabled) {
+                userInput.disabled = disabled;
+                sendButton.disabled = disabled;
+                if (disabled) {
+                    userInput.placeholder = 'الفرعون بيفكر...';
+                } else {
+                    userInput.placeholder = 'اسأل الفرعون عن أي شيء...';
+                }
+            }
+
+            // --- Copy Message Function ---
+            // Modified to accept button element for visual feedback
+            async function copyMessage(buttonElement, text) {
+                const originalHTML = buttonElement.innerHTML; // Save original icon/text
+
+                try {
+                    await navigator.clipboard.writeText(text);
+                    console.log('Message copied to clipboard');
+
+                    // Visual confirmation: Change icon and text temporarily
+                    buttonElement.innerHTML = '<i class="fas fa-check"></i> تم النسخ!';
+                    buttonElement.style.color = '#28a745'; // Green success color (optional)
+
+
+                    // Revert back after 2 seconds
+                    setTimeout(() => {
+                        buttonElement.innerHTML = originalHTML;
+                        buttonElement.style.color = ''; // Reset color
+                    }, 2000);
+
+                } catch (err) {
+                    console.error('Failed to copy message: ', err);
+
+                    // Visual error indication
+                    buttonElement.innerHTML = '<i class="fas fa-times"></i> فشل النسخ!';
+                     buttonElement.style.color = '#dc3545'; // Red error color (optional)
+
+
+                     // Revert back after 2 seconds
+                     setTimeout(() => {
+                        buttonElement.innerHTML = originalHTML;
+                         buttonElement.style.color = ''; // Reset color
+                    }, 2000);
+                }
+            }
+
+
+            // --- Regenerate Last Response Function ---
+            async function regenerateLastResponse(aiMessageElement) {
+                 if (isTyping) { // Prevent regeneration while AI is typing
+                     console.warn('AI is currently typing. Cannot regenerate.');
+                     return;
+                 }
+
+                 // Find the last user message in history
+                 let lastUserMessageIndex = -1;
+                 for (let i = conversationHistory.length - 1; i >= 0; i--) {
+                      // Check for role 'user' and ensure it has text content
+                      if (conversationHistory[i].role === 'user' && conversationHistory[i].parts && conversationHistory[i].parts[0] && conversationHistory[i].parts[0].text) {
+                           lastUserMessageIndex = i;
+                           break; // Found the last user message
+                      }
+                 }
+
+                 if (lastUserMessageIndex === -1) {
+                      console.warn('No previous user message found to regenerate from.');
+                      addMessageToChat('عذراً، لا يمكنني إعادة توليد الإجابة بدون رسالة سابقة منك.', 'ai');
+                      return;
+                 }
+
+                 // Remove the last AI message(s) from history and UI that came after the last user message
+                 // This handles cases where there might be multiple AI messages after the user's last message
+                 let historyCleaned = false;
+                  for (let i = conversationHistory.length - 1; i > lastUserMessageIndex; i--) {
+                       if (conversationHistory[i].role === 'model') {
+                            // Find and remove the corresponding AI message element from the UI
+                            // This is a bit tricky as history doesn't map directly to UI elements 1:1
+                            // For simplicity, we'll just remove the *last* AI message element from the UI
+                            // corresponding to the AI message we are regenerating.
+                            // A more robust approach would require mapping history items to UI elements.
+                            // Given the current structure, removing the specific element passed to the function is better.
+                             if (chatContainer.contains(aiMessageElement)) {
+                                  aiMessageElement.remove();
+                             } else {
+                                  // Fallback: remove the last AI message element if the specific one isn't found (less ideal)
+                                   const lastAiElement = chatContainer.querySelector('.ai-message:last-of-type').closest('div.mx-auto');
+                                   if(lastAiElement) lastAiElement.remove();
+                             }
+
+                             conversationHistory.splice(i, 1); // Remove from history
+                             historyCleaned = true;
+                       }
+                  }
+
+                  // If the *specific* element passed wasn't removed (because it was the only AI message and it was removed above),
+                  // ensure it's gone. This check might be redundant with the loop above but adds safety.
+                   if (chatContainer.contains(aiMessageElement)) {
+                       aiMessageElement.remove();
+                       // Also remove from history if not already done (edge case)
+                       // This simple check is prone to errors if there are multiple AI messages
+                       // A better approach would be needed for complex history
+                       // For now, we rely on the loop above cleaning history correctly
+                   }
+
+
+                 // Now, re-send the last user message
+                 disableInput(true);
+                 isTyping = true;
+                 showTypingIndicator();
+
+                 try {
+                      // Resend the conversation history *up to* the last user message + system prompt prepended
+                      // fetchAIResponse will prepend the system prompt to historyToSend[0]
+                      const historyForRegeneration = conversationHistory.slice(0, lastUserMessageIndex + 1);
+
+                      await fetchAIResponse(historyForRegeneration); // Send relevant history
+
+                 } catch (error) {
+                     console.error('Error during regeneration:', error);
+                     // Error message added in fetchAIResponse
+                 } finally {
+                     disableInput(false);
+                     isTyping = false; // Reset typing state
+                     removeTypingIndicator();
+                     userInput.focus(); // Ensure input is focused after regeneration
+                 }
+            }
+
+
+            // --- Initial Setup ---
+            // Always show the character selection modal first since we're not using localStorage
+             characterModal.classList.remove('hidden');
+             appContainer.classList.add('hidden'); // Keep app container hidden until character is selected
+
+            // Note: Input focus on initial load happens in characterCards click handler
+
+        });
+    </script>
+
+</body>
+</html>
